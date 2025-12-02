@@ -1,20 +1,22 @@
 import org.apache.tools.ant.filters.FixCrLfFilter
 
-import java.nio.file.Paths
 import java.nio.file.Files
+import java.nio.file.Paths
 
 apply plugin: 'com.android.library'
 apply from: file(rootProject.file('module.gradle'))
 
 android {
+    namespace "il2cppdumper"
     compileSdkVersion rootProject.ext.targetSdkVersion
-    ndkVersion '25.2.9519653'
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         externalNativeBuild {
             cmake {
-                arguments "-DMODULE_NAME:STRING=$moduleLibraryName"
+                arguments "-DCMAKE_BUILD_TYPE=MinSizeRel"
+                cFlags "-std=c23"
+                cppFlags "-std=c++2c", "-fno-exceptions", "-fno-rtti", "-fvisibility=hidden", "-fvisibility-inlines-hidden"
             }
         }
     }
